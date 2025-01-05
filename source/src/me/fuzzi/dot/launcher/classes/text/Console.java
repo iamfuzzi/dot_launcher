@@ -1,5 +1,6 @@
 package me.fuzzi.dot.launcher.classes.text;
 
+import me.fuzzi.dot.launcher.classes.Main;
 import me.fuzzi.dot.launcher.classes.minecraft.*;
 import me.fuzzi.dot.launcher.classes.util.Config;
 import me.fuzzi.dot.launcher.classes.util.Folder;
@@ -54,6 +55,10 @@ public class Console {
                 }
             } else if (input.contains("launch ")) {
                 if (!isEmpty(input, "launch")) {
+                    Main main = new Main();
+                    main.getRpc().setUp("В игре");
+                    main.getRpc().setDown("Играет в " + arg(input, "launch"));
+
                     new Thread(() -> {
                         try {
                             Config config = new Config();
@@ -70,6 +75,7 @@ public class Console {
                             ex.printStackTrace();
                         }
                     }).start();
+                    main.getRpc().setUp("В меню...");
                 }
             } else if (input.contains("assets ")) {
                 if (!isEmpty(input, "assets")) {
