@@ -120,10 +120,6 @@ public class Console {
         }
     }
 
-
-
-
-
     private static boolean isEmpty(String string, String command) {
         String arg = string.replaceAll(command + " ", "").trim();
         if (arg.isEmpty()) {

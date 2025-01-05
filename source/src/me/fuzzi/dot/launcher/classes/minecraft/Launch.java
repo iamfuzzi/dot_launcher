@@ -43,7 +43,7 @@ public class Launch {
         String versionJarPath = folder.getMinecraft() + folder.getSeparator() + "versions" + folder.getSeparator() + versionName + folder.getSeparator() + versionName + ".jar";
 
         // Читаем библиотеки
-        String librariesPath = folder.getMinecraft() + folder.getSeparator() + "libraries";
+        String librariesPath = folder.getMinecraft() + folder.getSeparator() + "libraries" + folder.getSeparator() + versionName;
         List<String> libraries = getLibraries(new File(librariesPath));
 
         // Формируем classpath (все библиотеки + jar-файл версии)

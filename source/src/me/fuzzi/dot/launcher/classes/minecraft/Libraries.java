@@ -9,9 +9,19 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class Libraries {
-    Folder folder = new Folder();
-    public void downloadLibraries(String buildName) {
-        String jsonFilePath = folder.getMinecraft() + folder.getSeparator() + "versions" + folder.getSeparator() + buildName + folder.getSeparator() + buildName + ".json";
+    private Folder folder = new Folder();
+    private String buildName;
+
+    public String getBuildName() {
+        return buildName;
+    }
+    public void setBuildName(String buildName) {
+        this.buildName = buildName;
+    }
+
+    public void downloadLibraries(String build) {
+        setBuildName(build);
+        String jsonFilePath = folder.getMinecraft() + folder.getSeparator() + "versions" + folder.getSeparator() + build + folder.getSeparator() + build + ".json";
         File jsonFile = new File(jsonFilePath);
 
         // Чтение JSON-файла
@@ -87,7 +97,7 @@ public class Libraries {
 
     private void downloadJar(String jarUrl, String path) {
         // Указываем путь к директории .minecraft/libraries
-        String librariesDir = folder.getMinecraft() + folder.getSeparator() + "libraries";
+        String librariesDir = folder.getMinecraft() + folder.getSeparator() + "libraries" + folder.getSeparator() + getBuildName();
         File dir = new File(librariesDir, path.substring(0, path.lastIndexOf("/")));
 
         // Создаем директорию, если она не существует
