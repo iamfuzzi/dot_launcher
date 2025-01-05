@@ -29,11 +29,7 @@ public class Console {
             System.out.print("> ");
             String input = scanner.nextLine();
 
-            if (input.contains("run ")) {
-                if (!isEmpty(input, "run")) {
-                    System.out.println("Запуск сборки \"" + arg(input, "run") + "\"");
-                }
-            } else if (input.equals("jdk")) {
+            if (input.equals("jdk")) {
                 JDK jdk =  new JDK();
                 jdk.download();
                 System.out.println("JDK установлен");
