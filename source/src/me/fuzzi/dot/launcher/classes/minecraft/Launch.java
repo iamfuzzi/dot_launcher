@@ -2,7 +2,6 @@ package me.fuzzi.dot.launcher.classes.minecraft;
 
 import me.fuzzi.dot.launcher.classes.util.Folder;
 import me.fuzzi.dot.launcher.classes.util.general.JSON;
-import me.fuzzi.dot.launcher.classes.util.general.Properties;
 import me.fuzzi.dot.launcher.classes.util.general.Text;
 
 import java.io.File;
@@ -33,6 +32,7 @@ public class Launch {
         JSON json = new JSON();
         Text text = new Text();
         String assetIndex = json.getValue(text.fromFile(folder.getMinecraft() + folder.getSeparator() + "versions" + folder.getSeparator() + versionName + folder.getSeparator() + versionName + ".json"), "assets");
+        String mainClass = json.getValue(text.fromFile(folder.getMinecraft() + folder.getSeparator() + "versions" + folder.getSeparator() + versionName + folder.getSeparator() + versionName + ".json"), "mainClass");
 
         File userDirFile = new File(userDir);
         if (!userDirFile.exists() && !userDirFile.mkdirs()) {
@@ -61,7 +61,7 @@ public class Launch {
         jvmArgs.add("-Dminecraft.home=" + userDir); // Устанавливаем переменную окружения для Minecraft
         jvmArgs.add("-cp");
         jvmArgs.add(classpath.toString());
-        jvmArgs.add("net.minecraft.client.main.Main"); // Главный класс Minecraft
+        jvmArgs.add(mainClass); // Главный класс Minecraft
 
         // Формируем игровые аргументы
         List<String> gameArgs = new ArrayList<>();
