@@ -1,6 +1,9 @@
 package me.fuzzi.dot.launcher.classes.minecraft;
 
 import me.fuzzi.dot.launcher.classes.util.Folder;
+import me.fuzzi.dot.launcher.classes.util.general.JSON;
+import me.fuzzi.dot.launcher.classes.util.general.Properties;
+import me.fuzzi.dot.launcher.classes.util.general.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +29,11 @@ public class Launch {
     public void launch() throws IOException {
         // Путь к папке с пользовательскими данными (например, .minecraft/home/Тестовая сборка)
         String userDir = folder.getMinecraft() + folder.getSeparator() + "home" + folder.getSeparator() + versionName;
+
+        JSON json = new JSON();
+        Text text = new Text();
+        String assetIndex = json.getValue(text.fromFile(folder.getMinecraft() + folder.getSeparator() + "versions" + folder.getSeparator() + versionName + folder.getSeparator() + versionName + ".json"), "assets");
+
         File userDirFile = new File(userDir);
         if (!userDirFile.exists() && !userDirFile.mkdirs()) {
             throw new IOException("Failed to create directory: " + userDir);
@@ -66,7 +74,7 @@ public class Launch {
         gameArgs.add("--assetsDir");
         gameArgs.add(assetsDir);
         gameArgs.add("--assetIndex");
-        gameArgs.add("5");
+        gameArgs.add(assetIndex);
         gameArgs.add("--accessToken");
         gameArgs.add(accessToken);
 
