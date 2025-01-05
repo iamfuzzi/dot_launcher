@@ -12,7 +12,9 @@ public class RPC {
         String appid = "1324375125847441475";
         String steamid = "";
         DiscordEventHandlers handlers = new DiscordEventHandlers();
-        handlers.ready = (a) -> System.out.println("(Discord RPC успешно запущен)");
+        handlers.ready = (a) -> {
+            //System.out.println("(Discord RPC успешно запущен)");
+        };
         lib.Discord_Initialize(appid, handlers, true, steamid);
         DiscordRichPresence presence = new DiscordRichPresence();
         presence.startTimestamp = System.currentTimeMillis() / 1000;
