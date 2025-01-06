@@ -1,3 +1,14 @@
 {
-  "rpc.menu.up": "В меню..."
+  "rpc.menu.up": "В меню...",
+  "rpc.playing.up": "В игре",
+  "rpc.playinh.down": "Играет в ",
+
+  "jdk.start": "Начало загрузки JDK...",
+  "jdk.end": "JDK установлен!",
+
+  "debug.title": "Вывод отладочной информации",
+
+  "exit": "Вывод отладочной информации",
+
+  "download.loader.error": "Невозможно установить версию"
 }
