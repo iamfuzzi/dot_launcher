@@ -5,6 +5,7 @@ import me.fuzzi.dot.launcher.classes.text.Command;
 import me.fuzzi.dot.launcher.classes.text.CommandHandler;
 import me.fuzzi.dot.launcher.classes.text.CommandList;
 import me.fuzzi.dot.launcher.classes.util.Config;
+import me.fuzzi.dot.launcher.classes.util.Lang;
 
 import java.util.Scanner;
 
@@ -13,9 +14,11 @@ public class Main {
 
     public static void main(String[] args) {
 
+        Lang lang = new Lang();
+
         Main main = new Main();
         main.rpc.discord();
-        main.rpc.setUp("В меню...");
+        main.rpc.setUp(lang.getLine("rpc.menu.up"));
 
         Config config = new Config();
         if (config.search("console") == null || config.search("console").isEmpty() || config.search("console").equals("false") || !config.search("console").equals("true")) {
@@ -27,7 +30,7 @@ public class Main {
 
             CommandHandler commandHandler = new CommandHandler(command);
 
-            System.out.println("Dot Launcher - console git@iamfuzzi");
+            System.out.println("Dot Launcher (console) - git@iamfuzzi");
             System.out.println();
             while (true) {
                 System.out.print("> ");
