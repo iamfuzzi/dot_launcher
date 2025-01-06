@@ -1,6 +1,7 @@
 package me.fuzzi.dot.launcher.classes;
 
 import me.fuzzi.dot.launcher.classes.discord.RPC;
+import me.fuzzi.dot.launcher.classes.frames.Frame;
 import me.fuzzi.dot.launcher.classes.text.Command;
 import me.fuzzi.dot.launcher.classes.text.CommandHandler;
 import me.fuzzi.dot.launcher.classes.text.CommandList;
@@ -22,7 +23,7 @@ public class Main {
 
         Config config = new Config();
         if (config.search("console") == null || config.search("console").isEmpty() || config.search("console").equals("false") || !config.search("console").equals("true")) {
-            // Код для GUI
+            new Frame();
         } else {
             Scanner scanner = new Scanner(System.in, "Cp866");
             Command command = new Command();
