@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 public class Command {
     private final Map<String, CommandDefinition> commands = new HashMap<>();
 
-    public void createMultiName(String[] names, int argCount, Consumer<String[]> action) {
+    public void create(String[] names, int argCount, Consumer<String[]> action) {
         for (String name : names) {
             commands.put(name, new CommandDefinition(argCount, action));
         }
