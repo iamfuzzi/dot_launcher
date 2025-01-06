@@ -39,3 +39,5 @@ echo Running the program: java -cp "bin;%LIB_DIR%\*" %MAIN_CLASS%
 java -cp "bin;%LIB_DIR%\*" %MAIN_CLASS%
 
 endlocal
+
+pause
