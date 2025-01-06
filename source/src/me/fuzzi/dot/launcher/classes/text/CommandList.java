@@ -4,6 +4,7 @@ import me.fuzzi.dot.launcher.classes.Main;
 import me.fuzzi.dot.launcher.classes.minecraft.*;
 import me.fuzzi.dot.launcher.classes.util.Config;
 import me.fuzzi.dot.launcher.classes.util.Folder;
+import me.fuzzi.dot.launcher.classes.util.Lang;
 import me.fuzzi.dot.launcher.classes.util.general.Download;
 import me.fuzzi.dot.launcher.classes.util.general.JSON;
 import me.fuzzi.dot.launcher.classes.util.general.Link;
@@ -13,23 +14,19 @@ import java.io.IOException;
 
 public class CommandList {
     public static void registerCommands(Command command) {
-        command.createMultiName(new String[]{"jdk"}, 0, args -> {
-            System.out.println("Начало установки JDK...");
+        Lang lang = new Lang();
+        command.create(new String[]{"jdk"}, 0, args -> {
+            System.out.println(lang.getLine("jdk.start"));
             JDK jdk =  new JDK();
             jdk.download();
-            System.out.println("JDK успешно установлен!");
+            System.out.println(lang.getLine("jdk.end"));
         });
-        command.createMultiName(new String[]{"download"}, 4, args -> {
+        command.create(new String[]{"download"}, 4, args -> {
 
-            switch (args[2]) {
-                case "fabric":
-                    System.out.println("Фабрик");
-                    break;
-                case "vanilla":
-                    System.out.println("Ванилла");
-                    break;
-                default:
-                    System.out.println("Невозможно скачать версию с " + args[2]);
+            if (args[2].equals("vanilla") || args[2].equals("fabric")) {}
+            else {
+                System.out.println(args[2].equals("download.loader.error") + " " + args[2] + args[3]);
+                return;
             }
 
             System.out.println("Установка версии " + args[0] + " как " + args[1] + " с " + args[2] + " версии " + args[3] + "...");
@@ -39,14 +36,14 @@ public class CommandList {
             download.fromUrl(version.getJar(args[0]), folder.getMinecraft() + folder.getSeparator() + "versions" + folder.getSeparator() + args[1], args[1] + ".jar");
             download.fromUrl(version.getJson(args[0]), folder.getMinecraft() + folder.getSeparator() + "versions" + folder.getSeparator() + args[1], args[1] + ".json");
         });
-        command.createMultiName(new String[]{"libraries"}, 1, args -> {
+        command.create(new String[]{"libraries"}, 1, args -> {
             Libraries libraries = new Libraries();
             libraries.downloadLibraries(args[0]);
         });
-        command.createMultiName(new String[]{"run", "launch", "play"}, 1, args -> {
+        command.create(new String[]{"run", "launch", "play"}, 1, args -> {
             Main main = new Main();
-            main.getRpc().setUp("В игре");
-            main.getRpc().setDown("Играет в " + args[0]);
+            main.getRpc().setUp(lang.getLine("rpc.playing.up"));
+            main.getRpc().setDown(lang.getLine("rpc.playing.down") + args[0]);
 
             try {
                 Config config = new Config();
@@ -62,13 +59,13 @@ public class CommandList {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            main.getRpc().setUp("В меню...");
+            main.getRpc().setUp(lang.getLine("rpc.menu.up"));
             main.getRpc().setDown("");
         });
-        command.createMultiName(new String[]{"assets"}, 1, args -> {
+        command.create(new String[]{"assets"}, 1, args -> {
             Assets assets = new Assets(args[0]);
         });
-        command.createMultiName(new String[]{"index"}, 1, args -> {
+        command.create(new String[]{"index"}, 1, args -> {
             Download download = new Download();
             Text text = new Text();
             JSON json = new JSON();
@@ -76,18 +73,16 @@ public class CommandList {
 
             String f = text.fromFile(folder.getMinecraft() + folder.getSeparator() + "versions" + folder.getSeparator() + args[0] + folder.getSeparator() + args[0] + ".json");
 
-            System.out.println(json.extractUrl(f, "assetIndex", "url"));
-
             Link link = new Link();
 
             download.fromUrl(json.extractUrl(f, "assetIndex", "url"), folder.getMinecraft() + folder.getSeparator() + "assets" + folder.getSeparator() + "indexes", link.extractFileName(json.extractUrl(f, "assetIndex", "url")));
         });
-        command.createMultiName(new String[]{"debug"}, 0, args -> {
-            System.out.println("Вывод отладочной информации");
+        command.create(new String[]{"debug"}, 0, args -> {
+            System.out.println(lang.getLine("debug.title"));
             System.out.println();
 
             Folder folder = new Folder();
-            System.out.println("Folder-методы");
+            System.out.println("Folder");
             System.out.println("getSeparator: " + folder.getSeparator());
             System.out.println("getInit: " + folder.getInit());
             System.out.println("getMain: " + folder.getMain());
@@ -95,11 +90,11 @@ public class CommandList {
             System.out.println();
 
             JDK jdk = new JDK();
-            System.out.println("JDK-методы");
+            System.out.println("JDK");
             System.out.println("getJdk: " + jdk.getJdk());
         });
-        command.createMultiName(new String[]{"exit", "quit", "close", "stop"}, 0, args -> {
-            System.out.println("Выход из программы...");
+        command.create(new String[]{"exit", "quit", "close", "stop"}, 0, args -> {
+            System.out.println(lang.getLine("exit"));
             System.exit(0);
         });
     }
