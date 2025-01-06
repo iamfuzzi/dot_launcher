@@ -23,7 +23,8 @@ if "!JAVA_FILES!"=="" (
 )
 
 rem Компилируем Java файлы, перенаправляя вывод в nul
-javac -d "%PROJECT_DIR%source\bin" -cp "%LIB_DIR%\*" !JAVA_FILES!
+echo Compiling Java files: !JAVA_FILES!
+javac -Xlint:deprecation -d "%PROJECT_DIR%source\bin" -cp "%LIB_DIR%\*" !JAVA_FILES!
 
 rem Проверяем, была ли компиляция успешной
 if errorlevel 1 (
@@ -34,6 +35,7 @@ if errorlevel 1 (
 
 rem Запускаем программу, устанавливая рабочую директорию на PROJECT_DIR
 cd /d "%PROJECT_DIR%source"
+echo Running the program: java -cp "bin;%LIB_DIR%\*" %MAIN_CLASS%
 java -cp "bin;%LIB_DIR%\*" %MAIN_CLASS%
 
 endlocal
