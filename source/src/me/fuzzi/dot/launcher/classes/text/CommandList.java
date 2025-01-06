@@ -48,22 +48,20 @@ public class CommandList {
             main.getRpc().setUp("В игре");
             main.getRpc().setDown("Играет в " + args[0]);
 
-            new Thread(() -> {
-                try {
-                    Config config = new Config();
-                    Folder folder = new Folder();
-                    String java;
-                    if (config.search("java").equals("dot")) {
-                        java = folder.getInit() + folder.getSeparator() + "launcher" + folder.getSeparator() + "jdk" + folder.getSeparator() + "jdk-21_windows-x64_bin" + folder.getSeparator() + "jdk-21.0.5" + folder.getSeparator() + "bin" + folder.getSeparator() + "java.exe";
-                    } else {
-                        java = config.search("java");
-                    }
-                    Launch launch = new Launch(args[0], java, config.search("nickname"), "otag");
-                    launch.launch();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+            try {
+                Config config = new Config();
+                Folder folder = new Folder();
+                String java;
+                if (config.search("java").equals("dot")) {
+                    java = folder.getInit() + folder.getSeparator() + "launcher" + folder.getSeparator() + "jdk" + folder.getSeparator() + "jdk-21_windows-x64_bin" + folder.getSeparator() + "jdk-21.0.5" + folder.getSeparator() + "bin" + folder.getSeparator() + "java.exe";
+                } else {
+                    java = config.search("java");
                 }
-            }).start();
+                Launch launch = new Launch(args[0], java, config.search("nickname"), "otag");
+                launch.launch();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
             main.getRpc().setUp("В меню...");
             main.getRpc().setDown("");
         });
