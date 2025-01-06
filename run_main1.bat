@@ -1,4 +1,3 @@
-chcp 1251
 @echo off
 setlocal enabledelayedexpansion
 
@@ -7,6 +6,8 @@ set PROJECT_DIR=%~dp0
 set SRC_DIR=%PROJECT_DIR%source\src
 set LIB_DIR=%SRC_DIR%\me\fuzzi\dot\launcher\libraries
 set MAIN_CLASS=me.fuzzi.dot.launcher.classes.Main
+
+chcp 866 > nul
 
 rem Компилируем все Java файлы
 set JAVA_FILES=
@@ -21,11 +22,8 @@ if "!JAVA_FILES!"=="" (
     exit /b 1
 )
 
-rem Сообщаем о начале компиляции
-echo Compiling the following Java files: !JAVA_FILES!
-
-rem Компилируем Java файлы и показываем все ошибки и предупреждения
-javac -Xlint:deprecation -d "%PROJECT_DIR%source\bin" -cp "%LIB_DIR%\*" !JAVA_FILES!
+rem Компилируем Java файлы, перенаправляя вывод в nul
+javac -d "%PROJECT_DIR%source\bin" -cp "%LIB_DIR%\*" !JAVA_FILES! > nul 2>&1
 
 rem Проверяем, была ли компиляция успешной
 if errorlevel 1 (
@@ -34,14 +32,8 @@ if errorlevel 1 (
     exit /b 1
 )
 
-rem Сообщаем о начале выполнения программы
-echo Running the program...
-
 rem Запускаем программу, устанавливая рабочую директорию на PROJECT_DIR
 cd /d "%PROJECT_DIR%source"
 java -cp "bin;%LIB_DIR%\*" %MAIN_CLASS%
-
-rem Пауза перед закрытием консоли
-pause
 
 endlocal

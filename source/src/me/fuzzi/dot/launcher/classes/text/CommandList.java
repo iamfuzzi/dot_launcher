@@ -19,8 +19,20 @@ public class CommandList {
             jdk.download();
             System.out.println("JDK успешно установлен!");
         });
-        command.createMultiName(new String[]{"download"}, 2, args -> {
-            System.out.println("Установка версии " + args[0] + " как " + args[1] + "...");
+        command.createMultiName(new String[]{"download"}, 4, args -> {
+
+            switch (args[2]) {
+                case "fabric":
+                    System.out.println("Фабрик");
+                    break;
+                case "vanilla":
+                    System.out.println("Ванилла");
+                    break;
+                default:
+                    System.out.println("Невозможно скачать версию с " + args[2]);
+            }
+
+            System.out.println("Установка версии " + args[0] + " как " + args[1] + " с " + args[2] + " версии " + args[3] + "...");
             Download download = new Download();
             Version version = new Version();
             Folder folder = new Folder();

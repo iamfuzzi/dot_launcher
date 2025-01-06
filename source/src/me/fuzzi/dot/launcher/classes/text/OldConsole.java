@@ -1,4 +1,4 @@
-package me.fuzzi.dot.launcher.classes.text;
+/*package me.fuzzi.dot.launcher.classes.text;
 
 import me.fuzzi.dot.launcher.classes.Main;
 import me.fuzzi.dot.launcher.classes.minecraft.*;
@@ -11,8 +11,8 @@ import me.fuzzi.dot.launcher.classes.util.general.Link;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Console {
-    public Console() {
+public class OldConsole {
+    public OldConsole() {
         Config config = new Config();
         if (config.search("console") == null || config.search("console").isEmpty() || config.search("console").equals("false")) { // Если параметр console в конфиге отсутствует, равен пустоте или равен false
             return;
@@ -144,4 +144,4 @@ public class Console {
             return null; // Неверный формат
         }
     }
-}
+}*/
