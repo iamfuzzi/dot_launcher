@@ -1,6 +1,7 @@
 package me.fuzzi.dot.launcher.classes.minecraft;
 
 import me.fuzzi.dot.launcher.classes.util.Folder;
+import me.fuzzi.dot.launcher.classes.util.Lang;
 import me.fuzzi.dot.launcher.classes.util.general.JSON;
 import me.fuzzi.dot.launcher.classes.util.general.Text;
 
@@ -11,36 +12,59 @@ import java.util.List;
 
 public class Launch {
     Folder folder = new Folder();
+    Lang lang = new Lang();
 
+    // Декларация нестатичных переменных
     private final String versionName; // Название версии (например, "Тестовая сборка")
-    private final String javaPath; // Путь к Java (например, "java" или полный путь к java.exe)
     private final String playerName; // Имя игрока
     private final String accessToken; // Токен для авторизации
-    private final String assetsDir = folder.getMinecraft() + folder.getSeparator() + "assets";
+    private final int minMem; // Минимальное кол-во памяти в Мб
+    private final int maxMem; // Максимальное кол-во памяти в Мб
 
-    public Launch(String versionName, String javaPath, String playerName, String accessToken) {
+    // Констурктор для обозначения нестатичных переменных
+    public Launch(String versionName, String playerName, String accessToken, int minMem, int maxMem) {
         this.versionName = versionName;
-        this.javaPath = javaPath;
         this.playerName = playerName;
         this.accessToken = accessToken;
+        this.minMem = minMem;
+        this.maxMem = maxMem;
     }
 
+    // Основной метод запуска игры
     public void launch() throws IOException {
-        // Путь к папке с пользовательскими данными (например, .minecraft/home/Тестовая сборка)
-        String userDir = folder.getMinecraft() + folder.getSeparator() + "home" + folder.getSeparator() + versionName;
+
+        // Создание статичных переменных или переменных, которые содержат нестатичные переменные
+
+        // Путь к папке home
+        String homeDir = folder.getMinecraft() + folder.getSeparator() + "home" + folder.getSeparator() + versionName;
+
+        // Путь к файлу версии (например, .minecraft/versions/Тестовая сборка/Тестовая сборка.jar)
+        String jarPath = folder.getMinecraft() + folder.getSeparator() + "versions" + folder.getSeparator() + versionName + folder.getSeparator() + versionName + ".jar";
+
+        // Путь к папке ассетов
+        String assetsDir = folder.getMinecraft() + folder.getSeparator() + "assets";
+
+        // Путь к папке с нативами
+        String nativesDir = folder.getMinecraft() + folder.getSeparator() + "versions" + folder.getSeparator() + versionName + folder.getSeparator() + "natives";
+
+        // Путь к Java
+        JDK jdk = new JDK();
+        String javaPath = jdk.getJdk();
 
         JSON json = new JSON();
         Text text = new Text();
+
+        // Номер ассет индекса
         String assetIndex = json.getValue(text.fromFile(folder.getMinecraft() + folder.getSeparator() + "versions" + folder.getSeparator() + versionName + folder.getSeparator() + versionName + ".json"), "assets");
+
+        // Мэйн класс
         String mainClass = json.getValue(text.fromFile(folder.getMinecraft() + folder.getSeparator() + "versions" + folder.getSeparator() + versionName + folder.getSeparator() + versionName + ".json"), "mainClass");
 
-        File userDirFile = new File(userDir);
+        // Создание рабочей папки, если ее не существует
+        File userDirFile = new File(homeDir);
         if (!userDirFile.exists() && !userDirFile.mkdirs()) {
-            throw new IOException("Failed to create directory: " + userDir);
+            throw new IOException(lang.getLine("error.dir.create") + ": " + homeDir);
         }
-
-        // Путь к файлу версии (например, .minecraft/versions/Тестовая сборка/Тестовая сборка.jar)
-        String versionJarPath = folder.getMinecraft() + folder.getSeparator() + "versions" + folder.getSeparator() + versionName + folder.getSeparator() + versionName + ".jar";
 
         // Читаем библиотеки
         String librariesPath = folder.getMinecraft() + folder.getSeparator() + "libraries" + folder.getSeparator() + versionName;
@@ -51,56 +75,78 @@ public class Launch {
         for (String lib : libraries) {
             classpath.append(lib).append(File.pathSeparator);
         }
-        classpath.append(versionJarPath);
+        classpath.append(jarPath);
 
-        // Формируем аргументы JVM
+        // Аргументы JVM
         List<String> jvmArgs = new ArrayList<>();
         jvmArgs.add(javaPath);
-        jvmArgs.add("-Xmx1G"); // Ограничение памяти (1 ГБ)
-        jvmArgs.add("-Xms256M"); // Начальный объём памяти (256 МБ)
-        jvmArgs.add("-Dminecraft.home=" + userDir); // Устанавливаем переменную окружения для Minecraft
+        jvmArgs.add("-Xms" + minMem + "M"); // Минимальное кол-во памяти
+        jvmArgs.add("-Xmx" + maxMem + "M"); // Максимальное кол-во памяти
+        jvmArgs.add("-Dminecraft.home=" + homeDir); // Рабочая папка
+        jvmArgs.add("-Djava.library.path=" + nativesDir); // Путь до нативов
         jvmArgs.add("-cp");
-        jvmArgs.add(classpath.toString());
+        jvmArgs.add(classpath.toString()); // Пути до всех библиотек и до исполняемого .jar файла
         jvmArgs.add(mainClass); // Главный класс Minecraft
 
-        // Формируем игровые аргументы
+        // Игровые аргументы
         List<String> gameArgs = new ArrayList<>();
-        gameArgs.add("--username");
+
+        gameArgs.add("--username"); // Никнейм
         gameArgs.add(playerName);
-        gameArgs.add("--version");
+        gameArgs.add("--version"); // Название версии
         gameArgs.add(versionName);
-        gameArgs.add("--gameDir");
-        gameArgs.add(userDir);
-        gameArgs.add("--assetsDir");
+        gameArgs.add("--gameDir"); // Рабочая папка
+        gameArgs.add(homeDir);
+        gameArgs.add("--assetsDir"); // Папка ассетов
         gameArgs.add(assetsDir);
-        gameArgs.add("--assetIndex");
+        gameArgs.add("--assetIndex"); // Индекс ассетов
         gameArgs.add(assetIndex);
-        gameArgs.add("--accessToken");
+        gameArgs.add("--accessToken"); // Токен доступа
         gameArgs.add(accessToken);
 
-        // Объединяем все аргументы
+        /*
+
+        Приколы
+
+        gameArgs.add("--demo"); // Демо
+
+        Для лицензии
+
+        gameArgs.add("--uuid"); // UUID
+        gameArgs.add("--cilentId"); // ID клиента
+        gameArgs.add("--xuid"); // Не знаю
+        gameArgs.add("--userType"); // Тип аккаунта
+        gameArgs.add("--versionType"); // Не знаю
+
+         */
+
+        // Все рагументы в одну строку
         List<String> processArgs = new ArrayList<>();
         processArgs.addAll(jvmArgs);
         processArgs.addAll(gameArgs);
 
-        // Запускаем процесс
+        // Запуск процесса
         ProcessBuilder processBuilder = new ProcessBuilder(processArgs);
-        processBuilder.directory(userDirFile); // Устанавливаем рабочую директорию
-        processBuilder.redirectErrorStream(true); // Объединяем stdout и stderr
+        processBuilder.directory(userDirFile); // Установка рабочей папки
+        processBuilder.redirectErrorStream(true); // Показ ошибок в консоли
 
         Process process = processBuilder.start();
-        process.getInputStream().transferTo(System.out); // Выводим логи игры в консоль
+        process.getInputStream().transferTo(System.out); // Вывод логов в консоль
     }
 
-    // Рекурсивно собираем все библиотеки из папки libraries
+    // Собираем все библиотеки из папки libraries
     private List<String> getLibraries(File librariesDir) {
-        List<String> libraries = new ArrayList<>();
-        if (librariesDir.exists() && librariesDir.isDirectory()) {
-            for (File file : librariesDir.listFiles()) {
-                if (file.isDirectory()) {
-                    libraries.addAll(getLibraries(file));
-                } else if (file.getName().endsWith(".jar")) {
-                    libraries.add(file.getAbsolutePath());
+        List<String> libraries = new ArrayList<>(); // Создаем массив
+
+        if (librariesDir.exists() && librariesDir.isDirectory()) { // Если существует папка библиотек
+
+            for (File file : librariesDir.listFiles()) { // Для каждого файла
+
+                if (file.isDirectory()) { // Если не файл, а папка, то
+                    libraries.addAll(getLibraries(file)); // Проделать дальше
+
+                } else if (file.getName().endsWith(".jar")) { // Если файл окначивается на .jar, то
+                    libraries.add(file.getAbsolutePath()); // Добавить полный путь до файла
                 }
             }
         }
