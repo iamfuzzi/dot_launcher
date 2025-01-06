@@ -26,6 +26,6 @@ public class Folder {
 
     // Получает основную рабочую папку (classes, textures, libraries)
     public String getMain() {
-        return getInit() + getSeparator() + ".launcher" + getSeparator() + "src" + getSeparator() + "me" + getSeparator() + "fuzzi" + getSeparator() + "dot" + getSeparator() + "launcher";
+        return getInit() + getSeparator() + "source" + getSeparator() + "src" + getSeparator() + "me" + getSeparator() + "fuzzi" + getSeparator() + "dot" + getSeparator() + "launcher";
     }
 }
