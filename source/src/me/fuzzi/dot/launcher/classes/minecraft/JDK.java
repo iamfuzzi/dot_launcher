@@ -4,13 +4,17 @@ import me.fuzzi.dot.launcher.classes.util.Config;
 import me.fuzzi.dot.launcher.classes.util.Folder;
 import me.fuzzi.dot.launcher.classes.util.general.Delete;
 import me.fuzzi.dot.launcher.classes.util.general.Download;
+import me.fuzzi.dot.launcher.classes.util.general.Link;
 import me.fuzzi.dot.launcher.classes.util.general.Zip;
 
 import java.io.File;
 
 public class JDK {
+
+    // Метод для скачивания JDK
     public void download() {
         Folder folder = new Folder();
+        Link link = new Link();
 
         String path = folder.getInit() + folder.getSeparator() + "launcher" + folder.getSeparator() + "jdk";
         String jdk = path + folder.getSeparator() + "jdk-21_windows-x64_bin";
@@ -20,7 +24,7 @@ public class JDK {
         File archiveF = new File(archive);
 
         if (jdkF.exists() && !archiveF.exists()) {
-            System.out.println("JDK уже установен!");
+            System.out.println(link.extractFileName("jdk.already"));
         } else {
             String url = "https://download.oracle.com/java/21/latest/jdk-21_windows-x64_bin.zip";
 
@@ -39,6 +43,8 @@ public class JDK {
             delete.delete(archive);
         }
     }
+
+    // Получить путь до JDK
     public String getJdk() {
         Config config = new Config();
         Folder folder = new Folder();
