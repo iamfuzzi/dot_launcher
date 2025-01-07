@@ -7,14 +7,14 @@ import club.minnced.discord.rpc.DiscordRichPresence;
 public class RPC {
     private String up;
     private String down;
+
+    // Инициализация RPC
     public void discord() {
         DiscordRPC lib = DiscordRPC.INSTANCE;
         String appid = "1324375125847441475";
         String steamid = "";
         DiscordEventHandlers handlers = new DiscordEventHandlers();
-        handlers.ready = (a) -> {
-            //System.out.println("(Discord RPC успешно запущен)");
-        };
+        handlers.ready = (a) -> {};
         lib.Discord_Initialize(appid, handlers, true, steamid);
         DiscordRichPresence presence = new DiscordRichPresence();
         presence.startTimestamp = System.currentTimeMillis() / 1000;
@@ -33,6 +33,7 @@ public class RPC {
         }, "RPC-Callback-Handler").start();
     }
 
+    // Установка нижнего и верхнего текста активности
     public void setUp(String up) {
         this.up = up;
         update();
@@ -41,6 +42,8 @@ public class RPC {
         this.down = down;
         update();
     }
+
+    // Обновление активности
     public void update() {
         DiscordRichPresence presence = new DiscordRichPresence();
         presence.startTimestamp = System.currentTimeMillis() / 1000;
