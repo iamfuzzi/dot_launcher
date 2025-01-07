@@ -13,8 +13,8 @@ public class Update {
             Text text = new Text();
             String url = "https://raw.githubusercontent.com/iamfuzzi/dot_launcher/refs/heads/main/version_manifest.json";
 
-            int[] dbFragments = new int[4]; // Максимум 4 элемента
-            String[] db = json.getValue(text.fromUrl(url), "version").split("\\."); // Разделяем строку по точкам
+            int[] dbFragments = new int[4];
+            String[] db = json.getValue(text.fromUrl(url), "version").split("\\.");
 
             for (int i = 0; i < 4; i++) {
                 if (i >= 4) break;
@@ -31,8 +31,8 @@ public class Update {
             }
 
 
-            int[] pcFragments = new int[4]; // Максимум 4 элемента
-            String[] pc = config.search("version").split("\\."); // Разделяем строку по точкам
+            int[] pcFragments = new int[4];
+            String[] pc = config.search("version").split("\\.");
 
             for (int i = 0; i < 4; i++) {
                 if (i >= 4) break;
