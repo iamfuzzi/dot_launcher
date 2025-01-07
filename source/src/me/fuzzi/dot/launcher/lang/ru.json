@@ -15,6 +15,10 @@
   "version.download.1": "Установка версии Minecraft",
   "version.download.2": "с названием",
 
+  "assets.start.1": "Начинаем скачивать ассеты для версии",
+  "assets.start.2": "Это может длиться до 10 минут...",
+  "assets.end": "Установка ассетов завершена!",
+
   "fabric.start.1": "Начниаем загрузку Fabric версии",
   "fabric.start.2": "для сборки",
   "fabric.end": "Установка Fabric завершена!",
