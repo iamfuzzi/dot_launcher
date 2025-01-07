@@ -112,7 +112,7 @@ public class CommandList {
             download.fromUrl("https://maven.fabricmc.net/net/fabricmc/intermediary/" + version + "/intermediary-" + version + ".jar", folder.getMinecraft() + folder.getSeparator() + "libraries" + folder.getSeparator() + args[1] + folder.getSeparator() + "net" + folder.getSeparator() + "fabricmc" + folder.getSeparator() + "intermediary" + folder.getSeparator() + version, "intermediary-" + version + ".jar");
             System.out.println(lang.getLine("fabric.end"));
         });
-        command.create(new String[]{"script"}, 1, args -> {
+        command.create(new String[]{"script", "scr"}, 1, args -> {
             Folder folder = new Folder();
 
             BufferedReader reader = null;
@@ -144,6 +144,10 @@ public class CommandList {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+        });
+        command.create(new String[]{"config", "conf", "cnf"}, 2, args -> {
+            Config config = new Config();
+            config.write(args[0], args[1]);
         });
     }
 }
