@@ -7,6 +7,7 @@ import me.fuzzi.dot.launcher.classes.text.CommandHandler;
 import me.fuzzi.dot.launcher.classes.text.CommandList;
 import me.fuzzi.dot.launcher.classes.util.Config;
 import me.fuzzi.dot.launcher.classes.util.Lang;
+import me.fuzzi.dot.launcher.classes.util.Update;
 
 import java.util.Scanner;
 
@@ -14,6 +15,7 @@ public class Main {
     private RPC rpc = new RPC();
 
     public static void main(String[] args) {
+        new Update();
 
         Lang lang = new Lang();
 

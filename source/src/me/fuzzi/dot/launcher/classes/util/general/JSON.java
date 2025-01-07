@@ -16,6 +16,29 @@ public class JSON {
         }
     }
 
+
+
+
+    public String getValueObject(String text, String array, String object, String parameter) {
+        JSONObject jsonObject = new JSONObject(text);
+
+        // Получаем объект arrayobject
+        JSONObject arrayobject = jsonObject.getJSONObject(array);
+
+        // Проверяем, существует ли указанная версия
+        if (arrayobject.has(object)) {
+            // Получаем объект для указанной версии
+            JSONObject versionObject = arrayobject.getJSONObject(object);
+            // Возвращаем значение text
+            return versionObject.getString(parameter);
+        } else {
+            return null; // Если версия не найдена, возвращаем null
+        }
+    }
+
+
+
+
     public String extractUrl(String text, String object, String parameter) {
         JSONObject jsonObject = new JSONObject(text); // Объект JSON из текста
 
