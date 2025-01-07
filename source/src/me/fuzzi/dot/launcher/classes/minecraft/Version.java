@@ -7,6 +7,8 @@ public class Version {
     private String manifest = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json";
     JSON json = new JSON();
     Text text = new Text();
+
+    // Получение путей для скачивания .jar и .json файлов сборки
     public String getJson(String version) {
         return json.getVersion(text.fromUrl(manifest), version);
     }
