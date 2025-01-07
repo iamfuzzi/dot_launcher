@@ -4,6 +4,8 @@ import me.fuzzi.dot.launcher.classes.interfaces.Elements;
 import me.fuzzi.dot.launcher.classes.interfaces.GUI;
 import me.fuzzi.dot.launcher.classes.interfaces.Tray;
 import me.fuzzi.dot.launcher.classes.interfaces.UI;
+import me.fuzzi.dot.launcher.classes.minecraft.Skin;
+import me.fuzzi.dot.launcher.classes.util.Config;
 import me.fuzzi.dot.launcher.classes.util.Folder;
 import me.fuzzi.dot.launcher.classes.util.general.Download;
 import me.fuzzi.dot.launcher.classes.util.general.Properties;
@@ -31,6 +33,13 @@ public class Frame {
 
         Tray tray = new Tray(frame, "open exit"); // Создание системного трея
 
+        Skin skin = new Skin();
+        Download download = new Download();
+        Config config = new Config();
+        download.fromUrl(skin.getSkin(config.search("nickname")), folder.getInit() + folder.getSeparator() + "launcher" + folder.getSeparator() + "temp" + folder.getSeparator(), "skin.png");
+
+
+
         GUI gui = new GUI(frame); // Создание GUI компонентов
 
         // Основные элементы
@@ -49,20 +58,12 @@ public class Frame {
         gui.image(frame.getWidth() - size - offset, offset, size, size, folder.getMain() + folder.getSeparator() + "textures" + folder.getSeparator() + "icons" + folder.getSeparator() + "close.png", 11);
 
 
-
-
-
-        /*Skin skin = new Skin();
-        Download download = new Download();*/
-
-        // download.fromUrl(skin.getSkin("denoph1ne"), folder.getInit() + folder.getSeparator() + "launcher" + folder.getSeparator() + "temp", "skin.png");
-
         Elements elements = new Elements(frame, gui);
 
         // Левая панель
-        elements.head(10, 40, 30, 30, 10);
-        gui.image(10, 90, 30, 30, folder.getMain() + folder.getSeparator() + "textures" + folder.getSeparator() + "grass.png", 1);
-        gui.button(10, 90, 30, 30, "new", null, null, 0);
+        elements.head(10, 40, 30, 30, 10); // Голова игрока
+        gui.image(10, 90, 30, 30, folder.getMain() + folder.getSeparator() + "textures" + folder.getSeparator() + "grass.png", 1); // Иконка настроек
+        gui.button(10, 90, 30, 30, "new", null, null, 0); // Кнопка входа в настройки
 
         // Нижняя панель
         /*gui.button(150, 550, 200, 100, "start", temps.getVersion(), null, 4);
