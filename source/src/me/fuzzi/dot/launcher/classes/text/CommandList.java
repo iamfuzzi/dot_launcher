@@ -21,15 +21,8 @@ public class CommandList {
             jdk.download();
             System.out.println(lang.getLine("jdk.end"));
         });
-        command.create(new String[]{"download"}, 4, args -> {
-
-            if (args[2].equals("vanilla") || args[2].equals("fabric")) {}
-            else {
-                System.out.println(args[2].equals("download.loader.error") + " " + args[2] + args[3]);
-                return;
-            }
-
-            System.out.println("Установка версии " + args[0] + " как " + args[1] + " с " + args[2] + " версии " + args[3] + "...");
+        command.create(new String[]{"download"}, 2, args -> {
+            System.out.println("Установка версии " + args[0] + " как " + args[1]);
             Download download = new Download();
             Version version = new Version();
             Folder folder = new Folder();
@@ -47,14 +40,7 @@ public class CommandList {
 
             try {
                 Config config = new Config();
-                Folder folder = new Folder();
-                String java;
-                if (config.search("java").equals("dot")) {
-                    java = folder.getInit() + folder.getSeparator() + "launcher" + folder.getSeparator() + "jdk" + folder.getSeparator() + "jdk-21_windows-x64_bin" + folder.getSeparator() + "jdk-21.0.5" + folder.getSeparator() + "bin" + folder.getSeparator() + "java.exe";
-                } else {
-                    java = config.search("java");
-                }
-                Launch launch = new Launch(args[0], java, config.search("nickname"), "otag");
+                Launch launch = new Launch(args[0], config.search("nickname"), "otag", 0, 2048);
                 launch.launch();
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -63,9 +49,6 @@ public class CommandList {
             main.getRpc().setDown("");
         });
         command.create(new String[]{"assets"}, 1, args -> {
-            Assets assets = new Assets(args[0]);
-        });
-        command.create(new String[]{"index"}, 1, args -> {
             Download download = new Download();
             Text text = new Text();
             JSON json = new JSON();
@@ -76,6 +59,8 @@ public class CommandList {
             Link link = new Link();
 
             download.fromUrl(json.extractUrl(f, "assetIndex", "url"), folder.getMinecraft() + folder.getSeparator() + "assets" + folder.getSeparator() + "indexes", link.extractFileName(json.extractUrl(f, "assetIndex", "url")));
+
+            Assets assets = new Assets(args[0]);
         });
         command.create(new String[]{"debug"}, 0, args -> {
             System.out.println(lang.getLine("debug.title"));
@@ -96,6 +81,18 @@ public class CommandList {
         command.create(new String[]{"exit", "quit", "close", "stop"}, 0, args -> {
             System.out.println(lang.getLine("exit"));
             System.exit(0);
+        });
+        command.create(new String[]{"natives"}, 1, args -> {
+            Natives natives = new Natives();
+            natives.download(args[0]);
+        });
+        command.create(new String[]{"fabric"}, 2, args -> {
+            Fabric fabric = new Fabric();
+            try {
+                fabric.download(args[0], args[1]);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 }

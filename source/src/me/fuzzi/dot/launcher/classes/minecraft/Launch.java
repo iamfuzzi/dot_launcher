@@ -80,10 +80,12 @@ public class Launch {
         // Аргументы JVM
         List<String> jvmArgs = new ArrayList<>();
         jvmArgs.add(javaPath);
-        jvmArgs.add("-Xms" + minMem + "M"); // Минимальное кол-во памяти
-        jvmArgs.add("-Xmx" + maxMem + "M"); // Максимальное кол-во памяти
+        //jvmArgs.add("-Xms" + minMem + "M"); // Минимальное кол-во памяти
+        //jvmArgs.add("-Xmx" + maxMem + "M"); // Максимальное кол-во памяти
+        jvmArgs.add("-Xmx2G");
         jvmArgs.add("-Dminecraft.home=" + homeDir); // Рабочая папка
         jvmArgs.add("-Djava.library.path=" + nativesDir); // Путь до нативов
+        //jvmArgs.add("-DFabricMcEmu= net.minecraft.client.main.Main");
         jvmArgs.add("-cp");
         jvmArgs.add(classpath.toString()); // Пути до всех библиотек и до исполняемого .jar файла
         jvmArgs.add(mainClass); // Главный класс Minecraft

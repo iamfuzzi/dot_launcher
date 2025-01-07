@@ -2,6 +2,7 @@ package me.fuzzi.dot.launcher.classes.minecraft;
 
 import me.fuzzi.dot.launcher.classes.util.Folder;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -47,7 +48,16 @@ public class Libraries {
         for (int i = 0; i < libraries.length(); i++) {
             JSONObject library = libraries.getJSONObject(i);
             JSONObject downloads = library.getJSONObject("downloads");
-            JSONObject artifact = downloads.getJSONObject("artifact");
+
+            // Попытка получить объект artifact
+            JSONObject artifact;
+            try {
+                artifact = downloads.getJSONObject("artifact");
+            } catch (JSONException e) {
+                System.out.println("Пропущена библиотека: " + library.getString("name") + " (artifact не найден)");
+                continue; // Пропускаем текущую библиотеку и переходим к следующей
+            }
+
             String url = artifact.getString("url");
             String path = artifact.getString("path");
 
