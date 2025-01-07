@@ -16,9 +16,10 @@ public class Fabric {
         JSON json = new JSON();
         Text text = new Text();
         Version version = new Version();
+        Folder folder = new Folder();
 
         // Получаем ID версии
-        String id = json.getValue(text.fromUrl(version.getJson(name)), "id");
+        String id = json.getValue(text.fromUrl(version.getJson(json.getValue(text.fromFile(folder.getMinecraft() + folder.getSeparator() + "versions" + folder.getSeparator() + name + folder.getSeparator() + name + ".json"), "id"))), "id");
 
         // Новый URL для получения JSON
         String jsonUrl = "https://meta.fabricmc.net/v2/versions/loader/" + id + "/" + fid;
