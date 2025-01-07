@@ -1,7 +1,7 @@
 {
   "rpc.menu.up": "В меню...",
   "rpc.playing.up": "В игре",
-  "rpc.playing.down": "Играет в ",
+  "rpc.playing.down": "Играет в",
 
   "jdk.start": "Начинаем загрузку JDK...",
   "jdk.end": "Установка JDK завершена!",
