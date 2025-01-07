@@ -10,7 +10,10 @@ import me.fuzzi.dot.launcher.classes.util.general.JSON;
 import me.fuzzi.dot.launcher.classes.util.general.Link;
 import me.fuzzi.dot.launcher.classes.util.general.Text;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class CommandList {
     public static void registerCommands(Command command) {
@@ -22,6 +25,7 @@ public class CommandList {
             System.out.println(lang.getLine("jdk.end"));
         });
         command.create(new String[]{"download"}, 2, args -> {
+            System.out.println(lang.getLine("warn.unstable"));
             System.out.println(lang.getLine("version.download.1") + " " + args[0] + " " + lang.getLine("version.download.2") + " " + args[1] + "...");
             Download download = new Download();
             Version version = new Version();
@@ -49,6 +53,7 @@ public class CommandList {
             main.getRpc().setDown("");
         });
         command.create(new String[]{"assets"}, 1, args -> {
+            System.out.println(lang.getLine("assets.start.1") + " " + args[0] + ". " + lang.getLine("assets.start.2"));
             Download download = new Download();
             Text text = new Text();
             JSON json = new JSON();
@@ -60,7 +65,9 @@ public class CommandList {
 
             download.fromUrl(json.extractUrl(f, "assetIndex", "url"), folder.getMinecraft() + folder.getSeparator() + "assets" + folder.getSeparator() + "indexes", link.extractFileName(json.extractUrl(f, "assetIndex", "url")));
 
-            Assets assets = new Assets(args[0]);
+            Assets assets = new Assets();
+            assets.download(args[0]);
+            System.out.println(lang.getLine("assets.end"));
         });
         command.create(new String[]{"debug"}, 0, args -> {
             System.out.println(lang.getLine("debug.title"));
@@ -98,9 +105,45 @@ public class CommandList {
             }
             Folder folder = new Folder();
             Download download = new Download();
+            JSON json = new JSON();
+            Text text = new Text();
+            String version = json.getValue(text.fromFile(folder.getMinecraft() + folder.getSeparator() + "versions" + folder.getSeparator() + args[1] + folder.getSeparator() + args[1] + ".json"), "id");
             download.fromUrl("https://maven.fabricmc.net/net/fabricmc/fabric-loader/" + args[0] + "/fabric-loader-" + args[0] + ".jar", folder.getMinecraft() + folder.getSeparator() + "libraries" + folder.getSeparator() + args[1] + folder.getSeparator() + "net" + folder.getSeparator() + "fabricmc" + folder.getSeparator() + "fabric-loader" + folder.getSeparator() + args[0], "fabric-loader-" + args[0] + ".jar");
-            download.fromUrl("https://maven.fabricmc.net/net/fabricmc/intermediary/" + args[1] + "/intermediary-" + args[1] + ".jar", folder.getMinecraft() + folder.getSeparator() + "libraries" + folder.getSeparator() + args[1] + folder.getSeparator() + "net" + folder.getSeparator() + "fabricmc" + folder.getSeparator() + "intermediary" + folder.getSeparator() + args[1], "intermediary-" + args[1] + ".jar");
-            System.out.println(lang.getLine("fabric.loaded"));
+            download.fromUrl("https://maven.fabricmc.net/net/fabricmc/intermediary/" + version + "/intermediary-" + version + ".jar", folder.getMinecraft() + folder.getSeparator() + "libraries" + folder.getSeparator() + args[1] + folder.getSeparator() + "net" + folder.getSeparator() + "fabricmc" + folder.getSeparator() + "intermediary" + folder.getSeparator() + version, "intermediary-" + version + ".jar");
+            System.out.println(lang.getLine("fabric.end"));
+        });
+        command.create(new String[]{"script"}, 1, args -> {
+            Folder folder = new Folder();
+
+            BufferedReader reader = null;
+            try {
+                reader = new BufferedReader(new FileReader(folder.getInit() + folder.getSeparator() + "scripts" + folder.getSeparator() + args[0] + ".dtl"));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    CommandHandler commandHandler = new CommandHandler(command);
+                    commandHandler.handleInput(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (reader != null) {
+                        reader.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        command.create(new String[]{"com", "comment", "console", "cons"}, 1, args -> {
+            System.out.println(args[0]);
+        });
+        command.create(new String[]{"thread", "sleep"}, 1, args -> {
+            try {
+                Thread.sleep(Integer.parseInt(args[0]) * 1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 }

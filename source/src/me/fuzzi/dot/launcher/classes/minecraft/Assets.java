@@ -12,7 +12,7 @@ public class Assets {
     private String jsonFilePath;
     private String assetsDir = folder.getMinecraft() + folder.getSeparator() + "assets" + folder.getSeparator() + "objects" + folder.getSeparator();
 
-    public Assets(String name) {
+    public void download(String name) {
         jsonFilePath = folder.getMinecraft() + folder.getSeparator() + "versions" + folder.getSeparator() + name + folder.getSeparator() + name + ".json";
         try {
             // Чтение JSON файла
