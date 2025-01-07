@@ -1,5 +1,7 @@
 package me.fuzzi.dot.launcher.classes.util.general;
 
+import me.fuzzi.dot.launcher.classes.util.Lang;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +29,9 @@ public class Download {
                 Files.copy(in, outputPath, StandardCopyOption.REPLACE_EXISTING);
             }
         } catch (IOException e) {
-            System.err.println("Ошибка: " + e.getMessage());
+            Lang lang = new Lang();
+            System.err.println(lang.getLine("error.unexpected"));
+            System.err.println(e.getMessage());
         }
     }
 }

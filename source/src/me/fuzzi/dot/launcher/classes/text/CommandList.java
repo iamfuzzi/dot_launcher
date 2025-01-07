@@ -22,7 +22,7 @@ public class CommandList {
             System.out.println(lang.getLine("jdk.end"));
         });
         command.create(new String[]{"download"}, 2, args -> {
-            System.out.println("Установка версии " + args[0] + " как " + args[1]);
+            System.out.println(lang.getLine("version.download.1") + " " + args[0] + " " + lang.getLine("version.download.2") + " " + args[1] + "...");
             Download download = new Download();
             Version version = new Version();
             Folder folder = new Folder();
@@ -79,7 +79,7 @@ public class CommandList {
             System.out.println("getJdk: " + jdk.getJdk());
         });
         command.create(new String[]{"exit", "quit", "close", "stop"}, 0, args -> {
-            System.out.println(lang.getLine("exit"));
+            System.out.println(lang.getLine("exit.line"));
             System.exit(0);
         });
         command.create(new String[]{"natives"}, 1, args -> {
@@ -87,12 +87,20 @@ public class CommandList {
             natives.download(args[0]);
         });
         command.create(new String[]{"fabric"}, 2, args -> {
+            System.out.println(lang.getLine("warn.unstable"));
+            System.out.println(lang.getLine("fabric.start.1") + " " + args[0] + " " + lang.getLine("fabric.start.2") + " " + args[1]);
             Fabric fabric = new Fabric();
             try {
                 fabric.download(args[0], args[1]);
             } catch (IOException e) {
+                System.out.println(lang.getLine("error.unexpected"));
                 throw new RuntimeException(e);
             }
+            Folder folder = new Folder();
+            Download download = new Download();
+            download.fromUrl("https://maven.fabricmc.net/net/fabricmc/fabric-loader/" + args[0] + "/fabric-loader-" + args[0] + ".jar", folder.getMinecraft() + folder.getSeparator() + "libraries" + folder.getSeparator() + args[1] + folder.getSeparator() + "net" + folder.getSeparator() + "fabricmc" + folder.getSeparator() + "fabric-loader" + folder.getSeparator() + args[0], "fabric-loader-" + args[0] + ".jar");
+            download.fromUrl("https://maven.fabricmc.net/net/fabricmc/intermediary/" + args[1] + "/intermediary-" + args[1] + ".jar", folder.getMinecraft() + folder.getSeparator() + "libraries" + folder.getSeparator() + args[1] + folder.getSeparator() + "net" + folder.getSeparator() + "fabricmc" + folder.getSeparator() + "intermediary" + folder.getSeparator() + args[1], "intermediary-" + args[1] + ".jar");
+            System.out.println(lang.getLine("fabric.loaded"));
         });
     }
 }

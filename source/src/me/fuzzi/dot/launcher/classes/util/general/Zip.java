@@ -1,5 +1,7 @@
 package me.fuzzi.dot.launcher.classes.util.general;
 
+import me.fuzzi.dot.launcher.classes.util.Lang;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,7 +18,9 @@ public class Zip {
             try {
                 Files.createDirectories(destDirPath);
             } catch (IOException e) {
-                System.err.println("Ошибка: " + e.getMessage());
+                Lang lang = new Lang();
+                System.err.println(lang.getLine("error.unexpected"));
+                System.err.println(e.getMessage());
                 return;
             }
         }
@@ -37,13 +41,17 @@ public class Zip {
                         Files.createDirectories(filePath.getParent()); // Создаем папку, если ее нет
                         Files.copy(zipIn, filePath, StandardCopyOption.REPLACE_EXISTING);
                     } catch (IOException e) {
-                        System.err.println("Ошибка: " + e.getMessage());
+                        Lang lang = new Lang();
+                        System.err.println(lang.getLine("error.unexpected"));
+                        System.err.println(e.getMessage());
                     }
                 }
                 zipIn.closeEntry();
             }
         } catch (IOException e) {
-            System.err.println("Ошибка: " + e.getMessage());
+            Lang lang = new Lang();
+            System.err.println(lang.getLine("error.unexpected"));
+            System.err.println(e.getMessage());
         }
     }
 }

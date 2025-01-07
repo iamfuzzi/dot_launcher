@@ -1,9 +1,12 @@
 package me.fuzzi.dot.launcher.classes.text;
 
+import me.fuzzi.dot.launcher.classes.util.Lang;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class CommandHandler {
+    Lang lang = new Lang();
     private final Command command;
 
     public CommandHandler(Command command) {
@@ -26,7 +29,7 @@ public class CommandHandler {
         if (validateArgs(commandArgs)) {
             command.execute(commandName, cleanArgs(commandArgs));
         } else {
-            System.out.println("Ошибка: Все аргументы должны начинаться с '-'.");
+            System.out.println(lang.getLine("cmd.args.format"));
         }
     }
 
