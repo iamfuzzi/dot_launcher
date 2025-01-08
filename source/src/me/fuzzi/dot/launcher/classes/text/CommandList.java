@@ -110,7 +110,7 @@ public class CommandList {
 
         // Получает значение Y или N от пользователя
         command.create(new String[]{"get"}, 3, args -> {
-            System.out.println("Введите Y или N для продолжения");
+            System.out.println(lang.getLine("cmd.get"));
             System.out.print(lang.getLine("cmd.script.name") + " > ");
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine();
