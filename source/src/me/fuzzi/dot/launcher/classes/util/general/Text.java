@@ -1,5 +1,7 @@
 package me.fuzzi.dot.launcher.classes.util.general;
 
+import me.fuzzi.dot.launcher.classes.util.Lang;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class Text {
+    Lang lang = new Lang();
 
     // Создание временного текста из ссылки
     public String fromUrl(String urlString) {
@@ -34,9 +37,11 @@ public class Text {
                     content.append(line).append("\n");
                 }
             } else {
-                System.out.println("Ошибка: " + status);
+                System.out.println(lang.getLine("error.unexpected"));
+                System.out.println(status);
             }
         } catch (IOException e) {
+            System.out.println(lang.getLine("error.unexpected"));
             e.printStackTrace();
 
         } finally {
@@ -48,6 +53,7 @@ public class Text {
                     connection.disconnect();
                 }
             } catch (IOException e) {
+                System.out.println(lang.getLine("error.unexpected"));
                 e.printStackTrace();
             }
         }
@@ -63,6 +69,7 @@ public class Text {
             // Чтение содержимого файла
             Files.lines(Paths.get(file)).forEach(line -> content.append(line).append("\n"));
         } catch (IOException e) {
+            System.out.println(lang.getLine("error.unexpected"));
             e.printStackTrace();
         }
 

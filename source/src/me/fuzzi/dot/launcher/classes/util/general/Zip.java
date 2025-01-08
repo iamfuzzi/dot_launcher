@@ -10,6 +10,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class Zip {
+    Lang lang = new Lang();
     public void unzip(String zipFilePath, String destDir) {
         Path destDirPath = Path.of(destDir); // Папка распаковки
 
@@ -18,7 +19,6 @@ public class Zip {
             try {
                 Files.createDirectories(destDirPath);
             } catch (IOException e) {
-                Lang lang = new Lang();
                 System.err.println(lang.getLine("error.unexpected"));
                 System.err.println(e.getMessage());
                 return;
@@ -41,7 +41,6 @@ public class Zip {
                         Files.createDirectories(filePath.getParent()); // Создаем папку, если ее нет
                         Files.copy(zipIn, filePath, StandardCopyOption.REPLACE_EXISTING);
                     } catch (IOException e) {
-                        Lang lang = new Lang();
                         System.err.println(lang.getLine("error.unexpected"));
                         System.err.println(e.getMessage());
                     }
@@ -49,7 +48,6 @@ public class Zip {
                 zipIn.closeEntry();
             }
         } catch (IOException e) {
-            Lang lang = new Lang();
             System.err.println(lang.getLine("error.unexpected"));
             System.err.println(e.getMessage());
         }
