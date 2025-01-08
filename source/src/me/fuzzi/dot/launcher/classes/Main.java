@@ -33,7 +33,8 @@ public class Main {
 
             CommandHandler commandHandler = new CommandHandler(command);
 
-            System.out.println("Dot Launcher (console) - git@iamfuzzi");
+            System.out.println(lang.getLine("main.line.1"));
+            System.out.println(lang.getLine("main.line.2"));
             System.out.println();
             while (true) {
                 System.out.print("> ");
