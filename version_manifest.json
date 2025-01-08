@@ -1,9 +1,9 @@
 {
-  "version": "a.1.1.1",
+  "version": "a.1.1.2",
   "versions": {
     "a.1.1.2": {
-      "stable": "false",
-      "changes": ""
+      "stable": "true",
+      "changes": "Фикс лоадеров, добавление переменных"
     },
     "a.1.1.1": {
       "stable": "false",
