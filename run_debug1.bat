@@ -1,7 +1,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
-rem Устанавливаем переменные для путей
+rem Переменные путей
 set PROJECT_DIR=%~dp0
 set SRC_DIR=%PROJECT_DIR%source\src
 set LIB_DIR=%SRC_DIR%\me\fuzzi\dot\launcher\libraries
@@ -9,33 +9,33 @@ set MAIN_CLASS=me.fuzzi.dot.launcher.classes.Main
 
 chcp 866
 
-rem Компилируем все Java файлы
+rem Компиляция
 set JAVA_FILES=
 for /r "%SRC_DIR%\me\fuzzi\dot\launcher" %%f in (*.java) do (
     set JAVA_FILES=!JAVA_FILES! "%%f"
 )
 
-rem Проверяем, есть ли файлы для компиляции
+rem Проверка существования файлов
 if "!JAVA_FILES!"=="" (
-    echo No Java files found to compile.
+    chcp 65001
+    echo Возникли проблемы с путем к файлам.
     pause
     exit /b 1
 )
 
-rem Компилируем Java файлы, перенаправляя вывод в nul
-echo Compiling Java files: !JAVA_FILES!
+rem Компиляция с выводом хода компиляции в nul
 javac -Xlint:deprecation -d "%PROJECT_DIR%source\bin" -cp "%LIB_DIR%\*" !JAVA_FILES!
 
-rem Проверяем, была ли компиляция успешной
+rem Если есть ошибки
 if errorlevel 1 (
-    echo Errors during compilation!
+    chcp 65001
+    echo Во время компиляции возникли ошибки! Попробуйте запустить debug-лоадер.
     pause
     exit /b 1
 )
 
 rem Запускаем программу, устанавливая рабочую директорию на PROJECT_DIR
 cd /d "%PROJECT_DIR%source"
-echo Running the program: java -cp "bin;%LIB_DIR%\*" %MAIN_CLASS%
 java -cp "bin;%LIB_DIR%\*" %MAIN_CLASS%
 
 endlocal

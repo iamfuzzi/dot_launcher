@@ -7,7 +7,7 @@ set SRC_DIR=%PROJECT_DIR%source\src
 set LIB_DIR=%SRC_DIR%\me\fuzzi\dot\launcher\libraries
 set MAIN_CLASS=me.fuzzi.dot.launcher.classes.Main
 
-chcp 866 > nul
+chcp 866
 
 rem Компиляция
 set JAVA_FILES=
@@ -17,7 +17,7 @@ for /r "%SRC_DIR%\me\fuzzi\dot\launcher" %%f in (*.java) do (
 
 rem Проверка существования файлов
 if "!JAVA_FILES!"=="" (
-    chcp 65001 > nul
+    chcp 65001
     echo Возникли проблемы с путем к файлам.
     pause
     exit /b 1
@@ -28,7 +28,7 @@ javac -Xlint:deprecation -encoding UTF-8 -d "%PROJECT_DIR%source\bin" -cp "%LIB_
 
 rem Если есть ошибки
 if errorlevel 1 (
-    chcp 65001 > nul
+    chcp 65001
     echo Во время компиляции возникли ошибки! Попробуйте запустить debug-лоадер.
     pause
     exit /b 1
@@ -39,3 +39,5 @@ cd /d "%PROJECT_DIR%source"
 java -cp "bin;%LIB_DIR%\*" %MAIN_CLASS%
 
 endlocal
+
+pause
