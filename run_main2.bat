@@ -24,7 +24,7 @@ if "!JAVA_FILES!"=="" (
 )
 
 rem Компиляция с выводом хода компиляции в nul
-javac -encoding UTF-8 -d "%PROJECT_DIR%source\bin" -cp "%LIB_DIR%\*" !JAVA_FILES! > nul >2>&1
+javac -encoding UTF-8 -d "%PROJECT_DIR%source\bin" -cp "%LIB_DIR%\*" !JAVA_FILES! > nul 2>&1
 
 rem Если есть ошибки
 if errorlevel 1 (
