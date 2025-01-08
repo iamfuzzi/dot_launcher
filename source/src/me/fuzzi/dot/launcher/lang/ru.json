@@ -32,7 +32,7 @@
 
   "debug.title": "Вывод отладочной информации",
 
-  "main.line.1": "Dot Launcher (console) - git@iamfuzzi",
+  "main.line.1": "Консоль Dot Launcher - git@iamfuzzi/dot_launcher",
   "main.line.2": "Для получения дополнительной информации напишите help",
 
   "exit.line": "Выключаем лаунчер...",
