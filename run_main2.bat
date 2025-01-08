@@ -3,7 +3,7 @@ setlocal enabledelayedexpansion
 
 rem Сообщение о запуске
 chcp 65001 > nul
-echo Запсук лаунчера...
+echo Запуск лаунчера...
 
 rem Переменные путей
 set PROJECT_DIR=%~dp0
@@ -43,3 +43,5 @@ cd /d "%PROJECT_DIR%source"
 java -cp "bin;%LIB_DIR%\*" %MAIN_CLASS%
 
 endlocal
+
+pause

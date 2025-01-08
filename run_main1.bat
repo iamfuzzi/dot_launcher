@@ -43,3 +43,5 @@ cd /d "%PROJECT_DIR%source"
 java -cp "bin;%LIB_DIR%\*" %MAIN_CLASS%
 
 endlocal
+
+pause
