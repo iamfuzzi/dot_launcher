@@ -37,10 +37,19 @@ public class CommandHandler {
         List<String> args = new ArrayList<>();
         StringBuilder currentArg = new StringBuilder();
         boolean inQuotes = false;
+        boolean escaping = false; // Флаг для отслеживания экранирования
 
         for (int i = 0; i < input.length(); i++) {
             char c = input.charAt(i);
-            if (c == '\"') {
+
+            if (escaping) {
+                // Если предыдущий символ был обратным слэшем, добавляем текущий символ в аргумент
+                currentArg.append(c);
+                escaping = false; // Сбрасываем флаг экранирования
+            } else if (c == '\\') {
+                // Если текущий символ - обратный слэш, устанавливаем флаг экранирования
+                escaping = true;
+            } else if (c == '\"') {
                 inQuotes = !inQuotes; // Переключаем состояние кавычек
             } else if (c == ' ' && !inQuotes) {
                 if (currentArg.length() > 0) {
