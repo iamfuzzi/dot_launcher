@@ -120,7 +120,7 @@ public class CommandList {
                     System.out.println("--c - пользовательские скрипты (папка\\scripts\\файлы .dtl), --s - системные скрипты (не выполнять, если не знаете что выполняете!)");
                     return;
                 }
-                reader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "Cp866"));
+                reader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-8"));
 
                 String line;
                 while ((line = reader.readLine()) != null) {
