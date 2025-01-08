@@ -3,6 +3,8 @@ sleep -3
 console -"Вы правда хотите начать?"
 get --wait -null -null
 console -"Отлично, тогда продолжаем!"
+console -"Хотите ли Вы установить JDK? (это необходимо для работы игры)"
+get --yAct -"jdk" -null
 download -1.20.1 -"Новая сборка"
 console -"Хотите ли Вы установить Fabric?"
 get --yAct -"fabric -0.16.9 -\"Новая сборка\"" -null
