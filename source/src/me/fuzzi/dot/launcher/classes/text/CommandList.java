@@ -22,6 +22,9 @@ public class CommandList {
         command.create(new String[]{"debug"}, 0, args -> {
             System.out.println(lang.getLine("debug.title"));
             System.out.println();
+            System.out.println("English text");
+            System.out.println("Текст на русском");
+            System.out.println();
 
             Folder folder = new Folder();
             System.out.println("Folder");
@@ -34,6 +37,7 @@ public class CommandList {
             JDK jdk = new JDK();
             System.out.println("JDK");
             System.out.println("getJdk: " + jdk.getJdk());
+            System.out.println();
         });
 
         // Завершение программы
@@ -42,6 +46,47 @@ public class CommandList {
             System.exit(0);
         });
 
+
+        // Запуск скрипта
+        command.create(new String[]{"script", "scr"}, 2, args -> {
+            Folder folder = new Folder();
+            isInterrupted = false;
+
+            BufferedReader reader = null;
+            String path;
+            try {
+                if (args[1].equals("-c")) { // Пользовательские скрипты
+                    path = folder.getInit() + folder.getSeparator() + "scripts" + folder.getSeparator() + args[0] + ".dtl";
+                } else if (args[1].equals("-s")) { // Системные скрипты
+                    path = folder.getMain() + folder.getSeparator() + "scripts" + args[0] + ".dtl";
+                } else {
+                    System.out.println("--c - пользовательские скрипты (папка\\scripts\\файлы .dtl), --s - системные скрипты (не выполнять, если не знаете что выполняете!)");
+                    return;
+                }
+                reader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-8"));
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (isInterrupted) { // Если выполнен force, прекратить выполнение
+                        break;
+                    }
+                    if (!line.startsWith(">")) { // Если строка - не комментарий
+                        CommandHandler commandHandler = new CommandHandler(command);
+                        commandHandler.handleInput(line);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (reader != null) {
+                        reader.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         // Комментарии в консоль
         command.create(new String[]{"console", "cons", "print"}, 1, args -> {
@@ -105,63 +150,9 @@ public class CommandList {
             }
         });
 
-        command.create(new String[]{"script", "scr"}, 2, args -> { // Запуск скрипта
-            Folder folder = new Folder();
-            isInterrupted = false;
 
-            BufferedReader reader = null;
-            String path;
-            try {
-                if (args[1].equals("-c")) { // Пользовательские скрипты
-                    path = folder.getInit() + folder.getSeparator() + "scripts" + folder.getSeparator() + args[0] + ".dtl";
-                } else if (args[1].equals("-s")) { // Системные скрипты
-                    path = folder.getMain() + folder.getSeparator() + "scripts" + args[0] + ".dtl";
-                } else {
-                    System.out.println("--c - пользовательские скрипты (папка\\scripts\\файлы .dtl), --s - системные скрипты (не выполнять, если не знаете что выполняете!)");
-                    return;
-                }
-                reader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-8"));
-
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    if (isInterrupted) { // Если выполнен force, прекратить выполнение
-                        break;
-                    }
-                    if (!line.startsWith(">")) { // Если строка - не комментарий
-                        CommandHandler commandHandler = new CommandHandler(command);
-                        commandHandler.handleInput(line);
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    if (reader != null) {
-                        reader.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-
-
-
-        command.create(new String[]{"new"}, 1, args -> {
-            // Переменные создаются в CommandHandler
-        });
-
-        command.create(new String[]{"set"}, 2, args -> {
-            // Переменные устанавливаются в CommandHandler
-        });
-
-        command.create(new String[]{"test"}, 2, args -> {
-            System.out.println("Арг 1: " + args[0] + ". Арг 2: " + args[1]);
-        });
-
-
-        command.create(new String[]{"download"}, 2, args -> { // Скачивание версии и сохранение ее
+        // Скачивание версии и сохранение ее
+        command.create(new String[]{"download"}, 2, args -> {
             System.out.println(lang.getLine("warn.unstable"));
             System.out.println(lang.getLine("version.download.1") + " " + args[0] + " " + lang.getLine("version.download.2") + " " + args[1] + "...");
             Download download = new Download();
@@ -171,17 +162,20 @@ public class CommandList {
             download.fromUrl(version.getJson(args[0]), folder.getMinecraft() + folder.getSeparator() + "versions" + folder.getSeparator() + args[1], args[1] + ".json");
         });
 
-        command.create(new String[]{"libraries"}, 1, args -> { // Установка библиотек
+        // Установка библиотек
+        command.create(new String[]{"libraries"}, 1, args -> {
             Libraries libraries = new Libraries();
             libraries.downloadLibraries(args[0]);
         });
 
-        command.create(new String[]{"natives"}, 1, args -> { // Установка нативов, иногда не требуется
+        // Установка нативов, иногда не требуется
+        command.create(new String[]{"natives"}, 1, args -> {
             Natives natives = new Natives();
             natives.download(args[0]);
         });
 
-        command.create(new String[]{"assets"}, 1, args -> { // Установка ассетов
+        // Установка ассетов
+        command.create(new String[]{"assets"}, 1, args -> {
             System.out.println(lang.getLine("assets.start.1") + " " + args[0] + ". " + lang.getLine("assets.start.2"));
             Download download = new Download();
             Text text = new Text();
@@ -199,7 +193,8 @@ public class CommandList {
             System.out.println(lang.getLine("assets.end"));
         });
 
-        command.create(new String[]{"fabric"}, 2, args -> { // Установка Fabric
+        // Установка Fabric
+        command.create(new String[]{"fabric"}, 2, args -> {
             System.out.println(lang.getLine("warn.unstable"));
             System.out.println(lang.getLine("fabric.start.1") + " " + args[0] + " " + lang.getLine("fabric.start.2") + " " + args[1]);
             Fabric fabric = new Fabric();
@@ -219,7 +214,8 @@ public class CommandList {
             System.out.println(lang.getLine("fabric.end"));
         });
 
-        command.create(new String[]{"run", "launch", "play"}, 1, args -> { // Запуск игры
+        // Запуск игры
+        command.create(new String[]{"run", "launch", "play", "start"}, 1, args -> {
             Main main = new Main();
             main.getRpc().setUp(lang.getLine("rpc.playing.up"));
             main.getRpc().setDown(lang.getLine("rpc.playing.down") + " " + args[0]);
@@ -236,11 +232,13 @@ public class CommandList {
         });
 
 
-        command.create(new String[]{"config", "conf", "cnf"}, 2, args -> { // Изменить значение в настройках лаунчера
+        // Изменить параметр в настройках лаунчера
+        command.create(new String[]{"config", "conf", "cnf", "param"}, 2, args -> {
             Config config = new Config();
             config.write(args[0], args[1]);
         });
 
+        // Установка JDK
         command.create(new String[]{"jdk"}, 0, args -> {
             System.out.println(lang.getLine("jdk.start"));
             JDK jdk =  new JDK();
