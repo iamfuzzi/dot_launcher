@@ -10,9 +10,7 @@ import me.fuzzi.dot.launcher.classes.util.general.JSON;
 import me.fuzzi.dot.launcher.classes.util.general.Link;
 import me.fuzzi.dot.launcher.classes.util.general.Text;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 public class CommandList {
@@ -122,7 +120,7 @@ public class CommandList {
                     System.out.println("--c - пользовательские скрипты (папка\\scripts\\файлы .dtl), --s - системные скрипты (не выполнять, если не знаете что выполняете!)");
                     return;
                 }
-                reader = new BufferedReader(new FileReader(path));
+                reader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "Cp866"));
 
                 String line;
                 while ((line = reader.readLine()) != null) {
