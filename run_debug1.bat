@@ -1,7 +1,4 @@
 @echo off
-rem устанавливаем размер столбцов, строк
-mode con: cols=110 lines=30
-
 setlocal enabledelayedexpansion
 
 rem Устанавливаем переменные для путей
