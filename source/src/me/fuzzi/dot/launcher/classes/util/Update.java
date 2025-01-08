@@ -6,7 +6,7 @@ import me.fuzzi.dot.launcher.classes.util.general.Text;
 public class Update {
     public Update() {
         Config config = new Config();
-        if (config.search("disableUpdates").equals("true")) {
+        if (config.search("checkUpdates").equals("false")) {
             return;
         } else {
             JSON json = new JSON();
@@ -48,13 +48,14 @@ public class Update {
                 pcFragments[i] = Integer.parseInt(pc[i]);
             }
 
+            Lang lang = new Lang();
             for (int i = 0; i < 4; i++) {
                 if (dbFragments[i] > pcFragments[i] && json.getValueObject(text.fromUrl(url), "versions", json.getValue(text.fromUrl(url), "version"), "stable").equals("true")) {
-                    Lang lang = new Lang();
-                    System.out.println(lang.getLine("update.found") +  " " + json.getValue(text.fromUrl(url), "version"));
+                    System.out.println(lang.getLine("update.found.1") +  " " + json.getValue(text.fromUrl(url), "version") + "! " + lang.getLine("update.found.2"));
                     return;
                 }
             }
+            System.out.println(lang.getLine("update.found.no"));
         }
     }
 }
